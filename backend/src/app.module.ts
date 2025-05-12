@@ -15,6 +15,7 @@ import { InventorySubscriber } from './history/inventory.subscriber';
 import { ScheduleModule } from '@nestjs/schedule';
 import { PrinterModule } from './devices/printer/printer.module';
 import { Printer } from './devices/printer/printer.entity';
+import { InventoryPart } from './inventory/inventory-part.entity';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { Printer } from './devices/printer/printer.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Inventory, History],
+      entities: [User, Inventory, History, InventoryPart],
       synchronize: true,
       autoLoadEntities: true,
     }),

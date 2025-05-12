@@ -7,18 +7,32 @@ import { HistoryService } from 'src/history/history.service';
 
 @Injectable()
 export class InventoryService {
-    constructor(
-        @InjectRepository(Inventory)
-        private inventoryRepo: Repository<Inventory>,
-        private readonly historyService: HistoryService,
-      ) {}
+  constructor(
+    @InjectRepository(Inventory)
+    private inventoryRepo: Repository<Inventory>,
+    private readonly historyService: HistoryService,
+  ) {}
 
-  findAll(): Promise<Inventory[]> {
-    return this.inventoryRepo.find();
+  async findAll(): Promise<Inventory[]> {
+    const inventories = await this.inventoryRepo.find({ relations: ['parts'] });
+    return inventories.map((inv) => ({
+      ...inv,
+      count: inv.parts?.length || 0, // динамически устанавливаем count
+    }));
   }
 
-  findOne(id: number): Promise<Inventory | null> {
-    return this.inventoryRepo.findOne({ where: { id } });
+  async findOne(id: number): Promise<Inventory | null> {
+    const inv = await this.inventoryRepo.findOne({
+      where: { id },
+      relations: ['parts'],
+    });
+
+    if (!inv) return null;
+
+    return {
+      ...inv,
+      count: inv.parts?.length || 0,
+    };
   }
 
   async create(data: Partial<Inventory>): Promise<Inventory> {
@@ -28,11 +42,19 @@ export class InventoryService {
     return saved;
   }
 
-  async update(id: number, data: Partial<Inventory>): Promise<Inventory | null> {
+  async update(
+    id: number,
+    data: Partial<Inventory>,
+  ): Promise<Inventory | null> {
     await this.inventoryRepo.update(id, data);
     const updated = await this.findOne(id);
     if (updated) {
-      await this.historyService.logChange('update', 'inventory', updated.id, updated);
+      await this.historyService.logChange(
+        'update',
+        'inventory',
+        updated.id,
+        updated,
+      );
     }
     return updated;
   }
@@ -43,5 +65,5 @@ export class InventoryService {
       await this.inventoryRepo.delete(id);
       await this.historyService.logChange('delete', 'inventory', id, toDelete);
     }
-  }  
+  }
 }

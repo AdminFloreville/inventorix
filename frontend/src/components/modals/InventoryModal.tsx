@@ -1,4 +1,3 @@
-// src/components/modals/InventoryModal.tsx
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import Input from '../common/Input';
@@ -16,10 +15,20 @@ interface Props {
 }
 
 const InventoryModal = ({ initialData, onClose, onSubmit }: Props) => {
-  const [form, setForm] = useState(initialData || { name: '', type: '', description: '' });
+  const [form, setForm] = useState({
+    name: '',
+    type: '',
+    description: '',
+    ...initialData,
+  });
 
   useEffect(() => {
-    if (initialData) setForm(initialData);
+    if (initialData) {
+      setForm((prev) => ({
+        ...prev,
+        ...initialData,
+      }));
+    }
   }, [initialData]);
 
   const handleChange = (key: string, value: string) => {
@@ -46,20 +55,12 @@ const InventoryModal = ({ initialData, onClose, onSubmit }: Props) => {
         <div className="space-y-3">
           <Input label="Название" value={form.name} onChange={(val) => handleChange('name', val)} />
           <Input label="Тип" value={form.type} onChange={(val) => handleChange('type', val)} />
-          <Input
-            label="Описание"
-            value={form.description}
-            onChange={(val) => handleChange('description', val)}
-          />
+          <Input label="Описание" value={form.description} onChange={(val) => handleChange('description', val)} />
         </div>
 
         <div className="flex justify-end mt-6 space-x-3">
-          <Button onClick={onClose}>
-            Отмена
-          </Button>
-          <Button onClick={handleSubmit}>
-            {form.id ? 'Сохранить' : 'Добавить'}
-          </Button>
+          <Button onClick={onClose}>Отмена</Button>
+          <Button onClick={handleSubmit}>{form.id ? 'Сохранить' : 'Добавить'}</Button>
         </div>
       </motion.div>
     </div>
