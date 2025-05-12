@@ -21,7 +21,7 @@ export default function InventoryPartModal({
     });
 
     const handleChange = (key: string, value: any) => {
-        setForm((prev) => ({ ...prev, [key]: value }));
+        setForm((prev: any) => ({ ...prev, [key]: value }));
     };
 
     const handleSave = () => {
