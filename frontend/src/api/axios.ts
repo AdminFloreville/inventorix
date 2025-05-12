@@ -1,13 +1,13 @@
 // src/api/axios.ts
-import axios from 'axios';
+import axios from "axios";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3000', // заменишь при необходимости
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
 });
 
 instance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem("access_token");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -17,7 +17,7 @@ instance.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) {
       // Можно добавить автоматический выход
-      console.warn('Unauthorized');
+      console.warn("Unauthorized");
     }
     return Promise.reject(err);
   }
