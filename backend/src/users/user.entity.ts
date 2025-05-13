@@ -1,10 +1,13 @@
 // src/users/user.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
-
-export enum UserRole {
-  ADMIN = 'admin',
-  USER = 'user',
-}
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { Role } from '../roles/role.entity';
 
 @Entity()
 export class User {
@@ -17,12 +20,17 @@ export class User {
   @Column()
   password: string;
 
-  @Column({
-    type: 'enum',
-    enum: UserRole,
-    default: UserRole.USER,
-  })
-  role: UserRole;
+  @Column({ nullable: true })
+  name: string;
+
+  @Column({ default: true })
+  isActive: boolean;
+
+  @ManyToMany(() => Role, (role) => role.users, { eager: true })
+  @JoinTable()
+  roles: Role[];
+
+
 
   @CreateDateColumn()
   createdAt: Date;

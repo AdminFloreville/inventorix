@@ -16,6 +16,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { PrinterModule } from './devices/printer/printer.module';
 import { Printer } from './devices/printer/printer.entity';
 import { InventoryPart } from './inventory/inventory-part.entity';
+import { Role } from './roles/role.entity';
+import { RoleModule } from './roles/role.module';
 
 @Module({
   imports: [
@@ -29,7 +31,7 @@ import { InventoryPart } from './inventory/inventory-part.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Inventory, History, InventoryPart],
+      entities: [User, Inventory, History, InventoryPart, Role],
       synchronize: true,
       autoLoadEntities: true,
     }),
@@ -39,6 +41,7 @@ import { InventoryPart } from './inventory/inventory-part.entity';
     CameraModule,
     HistoryModule,
     PrinterModule,
+    RoleModule
   ],
   providers: [InventorySubscriber], // 🔥 обязательно здесь!
 })

@@ -21,7 +21,17 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { email: user.email, sub: user.id, role: user.role };
+    const fullUser = await this.usersService.findByEmail(user.email);
+    if (!fullUser) {
+      throw new UnauthorizedException('Пользователь не найден');
+    }
+  
+    const payload = {
+      email: fullUser.email,
+      sub: fullUser.id,
+      roles: fullUser.roles?.map((r) => r.name) || [], // безопасно
+    };
+  
     return {
       access_token: this.jwtService.sign(payload),
     };
@@ -29,6 +39,19 @@ export class AuthService {
 
   async register(email: string, password: string) {
     const hashed = await bcrypt.hash(password, 10);
-    return this.usersService.create({ email, password: hashed });
+
+    // Проверяем, сколько пользователей уже есть
+    const existingUsers = await this.usersService.count();
+    console.log(existingUsers);
+    
+    // Создаём пользователя
+    const user = await this.usersService.create({ email, password: hashed });
+
+    // Если это первый пользователь — назначаем роль "admin"
+    if (existingUsers === 0) {
+      await this.usersService.assignRoles(user.id, ['admin']);
+    }
+
+    return user;
   }
 }
