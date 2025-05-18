@@ -12,8 +12,7 @@ const Header = observer(() => {
   };
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `px-4 py-2 rounded hover:bg-blue-600 hover:text-white ${
-      isActive ? 'bg-blue-500 text-white' : 'text-blue-700'
+    `px-4 py-2 rounded hover:bg-blue-600 hover:text-white ${isActive ? 'bg-blue-500 text-white' : 'text-blue-700'
     }`;
 
   return (
@@ -22,7 +21,7 @@ const Header = observer(() => {
       {authStore.isAuthenticated && (
         <nav className="flex gap-4 items-center">
           <NavLink to="/inventory" className={linkClass}>
-            Инвентарь
+            IT-отдел
           </NavLink>
           <NavLink to="/history" className={linkClass}>
             История

@@ -40,7 +40,7 @@ const Inventory = observer(() => {
   return (
     <div className="max-w-5xl mx-auto mt-10 p-6 bg-white rounded shadow">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Инвентарь</h2>
+        <h2 className="text-2xl font-bold">IT-отдел</h2>
         <Button onClick={() => setModalOpen(true)}>+ Добавить</Button>
       </div>
 

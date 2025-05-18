@@ -102,7 +102,7 @@ const PrinterModal = ({ onClose, onSubmit, initialData }: Props) => {
             onChange={(val) => setForm((p) => ({ ...p, location: val }))}
           />
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Инвентарь</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">IT-отдел</label>
             <select
               className={`w-full border rounded px-3 py-2 ${errors.inventoryId ? 'border-red-500' : ''}`}
               value={form.inventoryId}
