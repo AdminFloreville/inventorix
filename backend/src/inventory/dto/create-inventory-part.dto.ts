@@ -12,4 +12,7 @@ export class CreateInventoryPartDto {
 
   @IsBoolean()
   isWrittenOff: boolean;
+
+  @IsString()
+  user: string;
 }

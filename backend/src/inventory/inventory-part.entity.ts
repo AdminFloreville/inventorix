@@ -20,6 +20,12 @@ export class InventoryPart {
   @Column({ nullable: true })
   serialNumber: string;
 
+  @Column({ nullable: true })
+  user: string;
+
+  @Column({ default: false })
+  isWrittenOff: boolean;
+
   @ManyToOne(() => Inventory, (inventory) => inventory.parts, {
     onDelete: 'CASCADE',
   })

@@ -17,6 +17,7 @@ export default function InventoryPartModal({
         serialNumber: '',
         price: 0,
         isWrittenOff: false,
+        user: '',
         ...initialData,
     });
 
@@ -25,7 +26,7 @@ export default function InventoryPartModal({
     };
 
     const handleSave = () => {
-        if (!form.name || !form.serialNumber) return;
+        if (!form.name || !form.serialNumber || !form.user) return;
         onSubmit(form);
         onClose();
     };
@@ -57,6 +58,11 @@ export default function InventoryPartModal({
                         value={form.price}
                         type="number"
                         onChange={(val) => handleChange('price', +val)}
+                    />
+                    <Input
+                        label="Email пользователя"
+                        value={form.user}
+                        onChange={(val) => handleChange('user', val)}
                     />
                     <div className="flex items-center space-x-2 pt-2">
                         <input

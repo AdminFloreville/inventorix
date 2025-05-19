@@ -48,12 +48,10 @@ const Inventory = observer(() => {
         <table className="w-full text-sm">
           <thead className="bg-gray-100 text-gray-700 uppercase tracking-wide text-xs font-semibold">
             <tr>
-              <th className="px-4 py-3 text-left">ID</th>
               <th className="px-4 py-3 text-left">Название</th>
               <th className="px-4 py-3 text-left">Тип</th>
               <th className="px-4 py-3 text-left">Описание</th>
               <th className="px-4 py-3 text-left">Кол-во</th>
-              <th className="px-4 py-3 text-left">Статус</th>
               <th className="px-4 py-3 text-center">Действия</th>
             </tr>
           </thead>
@@ -61,21 +59,13 @@ const Inventory = observer(() => {
             {inventoryStore.items.map((item) => (
               <>
                 <tr key={item.id} className="hover:bg-blue-50 transition duration-200 ease-in-out">
-                  <td className="px-4 py-2">{item.id}</td>
                   <td className="px-4 py-2 font-medium">{item.name}</td>
                   <td className="px-4 py-2">{item.type}</td>
                   <td className="px-4 py-2">{item.description}</td>
                   <td className="px-4 py-2">
                     <div className="text-sm text-gray-800">{item.count || 0}</div>
                   </td>
-                  <td className="px-4 py-2">
-                    <span
-                      className={`inline-block px-2 py-0.5 text-xs rounded-full font-semibold ${item.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
-                        }`}
-                    >
-                      {item.isActive ? 'Активен' : 'Неактивен'}
-                    </span>
-                  </td>
+
                   <td className="px-4 py-2 text-center space-x-3">
                     <button
                       onClick={() => setEditItem(item)}
@@ -110,6 +100,8 @@ const Inventory = observer(() => {
                           <tr>
                             <th className="px-2 py-1 text-left">Название</th>
                             <th className="px-2 py-1 text-left">Серийный номер</th>
+                            <th className="px-2 py-1 text-left">Пользователь</th>
+                            <th className="px-2 py-1 text-left">Статус</th>
                             <th className="px-2 py-1 text-right">Действия</th>
                           </tr>
                         </thead>
@@ -118,6 +110,12 @@ const Inventory = observer(() => {
                             <tr key={index} className="border-t border-gray-100">
                               <td className="px-2 py-1">{sub.name}</td>
                               <td className="px-2 py-1">{sub.serialNumber}</td>
+                              <td className="px-2 py-1">{sub.user}</td>
+                              <td className="px-2 py-1">
+                                <span className={`px-2 py-0.5 rounded text-xs ${sub.isWrittenOff ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                                  {sub.isWrittenOff ? 'Списан' : 'Активен'}
+                                </span>
+                              </td>
                               <td className="px-2 py-1 text-right space-x-2">
                                 <button
                                   className="text-blue-500 text-xs"
