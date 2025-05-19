@@ -4,6 +4,7 @@ import { inventoryStore } from '../../stores/inventoryStore';
 import Button from '../../components/common/Button';
 import InventoryModal from '../../components/modals/InventoryModal';
 import InventoryPartModal from '../../components/modals/InventoryPartModal';
+import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
 
 const Inventory = observer(() => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -11,6 +12,7 @@ const Inventory = observer(() => {
   const [partModalOpen, setPartModalOpen] = useState(false);
   const [selectedInventoryId, setSelectedInventoryId] = useState<number | null>(null);
   const [editPart, setEditPart] = useState<any | null>(null);
+  const [qrModalOpen, setQrModalOpen] = useState<string | null>(null);
 
   useEffect(() => {
     inventoryStore.fetch();
@@ -107,7 +109,11 @@ const Inventory = observer(() => {
                         </thead>
                         <tbody>
                           {item.parts.map((sub: any, index: number) => (
-                            <tr key={index} className="border-t border-gray-100">
+                            <tr
+                              key={index}
+                              className="border-t border-gray-100 hover:bg-gray-50 cursor-pointer"
+                              onClick={() => setQrModalOpen(sub.serialNumber)}
+                            >
                               <td className="px-2 py-1">{sub.name}</td>
                               <td className="px-2 py-1">{sub.serialNumber}</td>
                               <td className="px-2 py-1">{sub.user}</td>
@@ -116,7 +122,7 @@ const Inventory = observer(() => {
                                   {sub.isWrittenOff ? 'Списан' : 'Активен'}
                                 </span>
                               </td>
-                              <td className="px-2 py-1 text-right space-x-2">
+                              <td className="px-2 py-1 text-right space-x-2" onClick={e => e.stopPropagation()}>
                                 <button
                                   className="text-blue-500 text-xs"
                                   onClick={() => {
@@ -184,6 +190,24 @@ const Inventory = observer(() => {
             }
           }}
         />
+      )}
+
+      {qrModalOpen && (
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg">
+            <div className="mb-4">
+              <QRCodeSVG value={qrModalOpen} size={256} />
+            </div>
+            <div className="text-center">
+              <button
+                onClick={() => setQrModalOpen(null)}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Закрыть
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
