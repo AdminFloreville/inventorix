@@ -4,7 +4,7 @@ import { inventoryStore } from '../../stores/inventoryStore';
 import Button from '../../components/common/Button';
 import InventoryModal from '../../components/modals/InventoryModal';
 import InventoryPartModal from '../../components/modals/InventoryPartModal';
-import { QRCodeCanvas, QRCodeSVG } from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 
 const Inventory = observer(() => {
   const [modalOpen, setModalOpen] = useState(false);
